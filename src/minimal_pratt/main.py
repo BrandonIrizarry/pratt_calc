@@ -1,6 +1,6 @@
 import re
 
-token_pat = re.compile("\s*(?:(\d+)|(.))")
+token_pat = re.compile(r"\s*(?:(\d+)|(.))")
 
 
 def tokenize(program):
