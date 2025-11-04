@@ -1,29 +1,67 @@
 import re
+from collections.abc import Callable, Generator
+from typing import TypedDict
 
 token_pat = re.compile(r"\s*(?:(\d+)|(.))")
 
 
-def tokenize(program):
+class Action(TypedDict):
+    """A Pratt-parser augmented token.
+
+    NUD (null denotation) refers to a token's action as a prefix.
+    LED (left denotation) refers to a token's action as a suffix.
+
+    """
+
+    nud: Callable[[], float]
+    led: Callable[[float], float]
+
+
+table: dict[str, Action] = {
+    "+": {
+        "nud": lambda: 0,
+        "led": lambda left: left + 0,
+    },
+    "-": {
+        "nud": lambda: 0,
+        "led": lambda left: left - 0,
+    },
+    "*": {
+        "nud": lambda: 0,
+        "led": lambda left: left * 1,
+    },
+    "//": {
+        "nud": lambda: 0,
+        "led": lambda left: left / 1,
+    },
+    "^": {
+        "nud": lambda: 0,
+        "led": lambda left: left**1,
+    },
+    "(": {
+        "nud": lambda: 0,
+        "led": lambda left: 0,
+    },
+    ")": {
+        "nud": lambda: 0,
+        "led": lambda left: 0,
+    },
+}
+
+
+def tokenize(program: str) -> Generator[Action]:
     for number, operator in token_pat.findall(program):
         if number:
-            yield literal_token(number)
-        elif operator == "+":
-            yield operator_add_token()
-        elif operator == "-":
-            yield operator_sub_token()
-        elif operator == "*":
-            yield operator_mul_token()
-        elif operator == "/":
-            yield operator_div_token()
-        elif operator == "^":
-            yield operator_pow_token()
-        elif operator == "(":
-            yield operator_lparen_token()
-        elif operator == ")":
-            yield operator_rparen_token()
+            yield {"nud": lambda: float(number), "led": lambda left: 0}
+
+        elif operator in table:
+            yield table[operator]
+
         else:
-            raise SyntaxError("unknown operator: %s", operator)
-    yield end_token()
+            raise SyntaxError(f"Unknown: {operator}")
+
+    # The end token.
+    yield {"nud": lambda: 0, "led": lambda left: 0}
 
 
 def match(tok=None):
