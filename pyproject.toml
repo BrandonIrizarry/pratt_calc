@@ -1,0 +1,43 @@
+[project]
+name = "minimal-pratt"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Brandon C. Irizarry", email = "brandon.irizarry@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = []
+
+[project.scripts]
+minimal-pratt = "minimal_pratt:main"
+
+[build-system]
+requires = ["uv_build>=0.9.4,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.basedpyright]
+reportMissingTypeStubs=false
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]
+
+[dependency-groups]
+dev = [
+    "basedpyright>=1.32.1",
+    "pytest>=8.4.2",
+    "ruff>=0.14.3",
+]
