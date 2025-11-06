@@ -1,4 +1,8 @@
+from __future__ import annotations
+
 import enum
+
+from more_itertools import peekable
 
 
 class Precedence(enum.IntEnum):
@@ -44,20 +48,20 @@ def precedence(token: Token) -> Precedence:
             raise ValueError(f"Invalid token: '{token}'")
 
 
-def expression(tokens: list[Token], i: int, level: int) -> tuple[int, int]:
+def expression(stream: peekable[Token], i: int, level: int) -> tuple[int, int]:
     # NUD
-    match tokens[i]:
+    match stream[i]:
         case int() as num:
             acc = num
             i += 1
 
         case "-":
-            value, i = expression(tokens, i + 1, Precedence.UNARY)
+            value, i = expression(stream, i + 1, Precedence.UNARY)
             acc = -value
 
         case "(":
-            value, i = expression(tokens, i + 1, Precedence.PARENS)
-            assert tokens[i] == ")"
+            value, i = expression(stream, i + 1, Precedence.PARENS)
+            assert stream[i] == ")"
             acc = value
 
             # We don't drive parsing/evaluation with right-paren, so
@@ -67,24 +71,24 @@ def expression(tokens: list[Token], i: int, level: int) -> tuple[int, int]:
         case _ as token:
             raise ValueError(f"nud: {token}")
 
-    while level < precedence(tokens[i]):
+    while level < precedence(stream[i]):
         # LED
-        match tokens[i]:
+        match stream[i]:
             case "+":
-                value, i = expression(tokens, i + 1, Precedence.PLUS_MINUS)
+                value, i = expression(stream, i + 1, Precedence.PLUS_MINUS)
                 acc += value
 
             case "-":
-                value, i = expression(tokens, i + 1, Precedence.PLUS_MINUS)
+                value, i = expression(stream, i + 1, Precedence.PLUS_MINUS)
                 acc -= value
 
             case "*":
-                value, i = expression(tokens, i + 1, Precedence.TIMES_DIVIDE)
+                value, i = expression(stream, i + 1, Precedence.TIMES_DIVIDE)
                 acc *= value
 
             case "^":
                 # Enforce right-association.
-                value, i = expression(tokens, i + 1, Precedence.POWER - 1)
+                value, i = expression(stream, i + 1, Precedence.POWER - 1)
 
                 prod = 1
 
@@ -106,3 +110,11 @@ def expression(tokens: list[Token], i: int, level: int) -> tuple[int, int]:
                 raise ValueError(f"led: {token}")
 
     return acc, i
+
+
+def expression_top(tokens: list[Token]) -> int:
+    stream = peekable(tokens)
+
+    value, _ = expression(stream, 0, Precedence.EOF)
+
+    return value

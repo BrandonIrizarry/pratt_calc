@@ -1,6 +1,6 @@
 import pytest
 
-from minimal_pratt.main import Precedence, Token, expression
+from minimal_pratt.main import Token, expression_top
 
 examples = [
     ([3, "eof"], 3),
@@ -20,6 +20,6 @@ examples = [
 
 @pytest.mark.parametrize("tokens, value", examples)
 def test_examples(tokens: list[Token], value: int):
-    result, _ = expression(tokens, 0, Precedence.EOF)
+    result = expression_top(tokens)
 
     assert result == value
