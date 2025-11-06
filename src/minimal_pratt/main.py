@@ -3,7 +3,7 @@ import enum
 
 class Precedence(enum.IntEnum):
     EOF = enum.auto()
-    LITERAL = enum.auto()
+    PARENS = enum.auto()
     PLUS_MINUS = enum.auto()
     TIMES_DIVIDE = enum.auto()
     POWER = enum.auto()
@@ -19,7 +19,7 @@ def precedence(token: Token) -> Precedence:
     # the 'expression' while-loop condition.)
     match token:
         case ")":
-            return Precedence.LITERAL
+            return Precedence.PARENS
 
         case "+":
             return Precedence.PLUS_MINUS
@@ -52,7 +52,7 @@ def expression(tokens: list[Token], i: int, acc: int, level: int) -> tuple[int, 
             acc = -value
 
         case "(":
-            value, i = expression(tokens, i + 1, acc, Precedence.LITERAL)
+            value, i = expression(tokens, i + 1, acc, Precedence.PARENS)
             assert tokens[i] == ")"
             acc = value
 
