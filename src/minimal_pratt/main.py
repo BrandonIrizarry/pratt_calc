@@ -55,8 +55,7 @@ def precedence(token: Token) -> Precedence:
 
 def expression(stream: Stream, level: int) -> tuple[int, Stream]:
     # NUD
-    current = stream.peek()
-    _ = next(stream)
+    current = next(stream)
 
     match current:
         case int() as num:
@@ -79,8 +78,7 @@ def expression(stream: Stream, level: int) -> tuple[int, Stream]:
             raise ValueError(f"nud: {token}")
 
     while level < precedence(stream.peek()):
-        current = stream.peek()
-        _ = next(stream)
+        current = next(stream)
 
         # LED
         match current:
