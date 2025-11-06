@@ -72,7 +72,13 @@ def expression(tokens: list[Token], i: int, acc: int, level: int) -> tuple[int, 
                 acc *= value
 
             case "^":
-                value, i = expression(tokens, i + 1, acc, Precedence.POWER)
+                # Enforce right-association.
+                #
+                # It looks like this works because it forces a ramp-up
+                # to occur when the next "^" is seen, triggering the
+                # rest of the expression (as applicable) to be
+                # evaluated before coming back here.
+                value, i = expression(tokens, i + 1, acc, Precedence.POWER - 1)
 
                 prod = 1
 
