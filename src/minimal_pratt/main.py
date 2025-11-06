@@ -70,11 +70,10 @@ class Parser:
 
             case "(":
                 acc = self.expression(Precedence.PARENS)
-                assert self.stream.peek() == ")"
 
-                # We don't drive parsing/evaluation with right-paren, so
-                # skip it.
-                _ = next(self.stream)
+                # We don't drive parsing/evaluation with right-paren,
+                # so we skip it as we read it.
+                assert next(self.stream) == ")"
 
             case _ as token:
                 raise ValueError(f"nud: {token}")
