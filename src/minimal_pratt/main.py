@@ -15,7 +15,12 @@ class Precedence(enum.IntEnum):
     FACTORIAL = enum.auto()
 
 
+# Since this definition has been known to change periodically, it's
+# better to keep a fixed alias for this.
 type Token = int | str
+
+# Mostly to keep line lengths shorter.
+type Stream = peekable[Token]
 
 
 def precedence(token: Token) -> Precedence:
@@ -48,47 +53,52 @@ def precedence(token: Token) -> Precedence:
             raise ValueError(f"Invalid token: '{token}'")
 
 
-def expression(stream: peekable[Token], i: int, level: int) -> tuple[int, int]:
+def expression(stream: Stream, level: int) -> tuple[int, Stream]:
     # NUD
-    match stream[i]:
+    current = stream.peek()
+    _ = next(stream)
+
+    match current:
         case int() as num:
             acc = num
-            i += 1
 
         case "-":
-            value, i = expression(stream, i + 1, Precedence.UNARY)
+            value, stream = expression(stream, Precedence.UNARY)
             acc = -value
 
         case "(":
-            value, i = expression(stream, i + 1, Precedence.PARENS)
-            assert stream[i] == ")"
+            value, stream = expression(stream, Precedence.PARENS)
+            assert stream.peek() == ")"
             acc = value
 
             # We don't drive parsing/evaluation with right-paren, so
             # skip it.
-            i += 1
+            _ = next(stream)
 
         case _ as token:
             raise ValueError(f"nud: {token}")
 
-    while level < precedence(stream[i]):
+    while level < precedence(stream.peek()):
+        current = stream.peek()
+        _ = next(stream)
+
         # LED
-        match stream[i]:
+        match current:
             case "+":
-                value, i = expression(stream, i + 1, Precedence.PLUS_MINUS)
+                value, stream = expression(stream, Precedence.PLUS_MINUS)
                 acc += value
 
             case "-":
-                value, i = expression(stream, i + 1, Precedence.PLUS_MINUS)
+                value, stream = expression(stream, Precedence.PLUS_MINUS)
                 acc -= value
 
             case "*":
-                value, i = expression(stream, i + 1, Precedence.TIMES_DIVIDE)
+                value, stream = expression(stream, Precedence.TIMES_DIVIDE)
                 acc *= value
 
             case "^":
                 # Enforce right-association.
-                value, i = expression(stream, i + 1, Precedence.POWER - 1)
+                value, stream = expression(stream, Precedence.POWER - 1)
 
                 prod = 1
 
@@ -104,17 +114,16 @@ def expression(stream: peekable[Token], i: int, level: int) -> tuple[int, int]:
                     prod *= j
 
                 acc = prod
-                i += 1
 
             case _ as token:
                 raise ValueError(f"led: {token}")
 
-    return acc, i
+    return acc, stream
 
 
 def expression_top(tokens: list[Token]) -> int:
     stream = peekable(tokens)
 
-    value, _ = expression(stream, 0, Precedence.EOF)
+    value, _ = expression(stream, Precedence.EOF)
 
     return value
