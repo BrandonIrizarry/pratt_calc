@@ -14,8 +14,11 @@ type Token = int | str
 
 
 def precedence(token: Token) -> Precedence:
+    # It looks like only potential led-tokens need to appear in this
+    # match statement ("potential", meaning that they get checked in
+    # the 'expression' while-loop condition.)
     match token:
-        case int():
+        case int() | ")":
             return Precedence.LITERAL
 
         case "+":
@@ -42,6 +45,15 @@ def expression(tokens: list[Token], i: int, acc: int, level: int) -> tuple[int, 
             value, i = expression(tokens, i + 1, acc, Precedence.UNARY)
             acc = -value
 
+        case "(":
+            value, i = expression(tokens, i + 1, acc, Precedence.LITERAL)
+            assert tokens[i] == ")"
+            acc = value
+
+            # We don't drive parsing/evaluation with right-paren, so
+            # skip it.
+            i += 1
+
         case _ as token:
             raise ValueError(f"nud: {token}")
 
@@ -65,7 +77,7 @@ def expression(tokens: list[Token], i: int, acc: int, level: int) -> tuple[int, 
     return acc, i
 
 
-t2: list[Token] = [3, "+", "-", 4, "*", 5, "+", 6, "eof"]
+t2: list[Token] = ["(", 3, "+", "-", 4, ")", "*", 5, "+", 6, "eof"]
 
 value = expression(t2, 0, 0, Precedence.EOF)
 
