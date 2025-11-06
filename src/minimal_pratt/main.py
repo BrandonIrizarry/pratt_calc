@@ -24,6 +24,9 @@ def precedence(token: Token) -> Precedence:
         case "+":
             return Precedence.PLUS_MINUS
 
+        case "-":
+            return Precedence.PLUS_MINUS
+
         case "*":
             return Precedence.TIMES_DIVIDE
 
@@ -66,6 +69,10 @@ def expression(tokens: list[Token], i: int, acc: int, level: int) -> tuple[int, 
             case "+":
                 value, i = expression(tokens, i + 1, acc, Precedence.PLUS_MINUS)
                 acc += value
+
+            case "-":
+                value, i = expression(tokens, i + 1, acc, Precedence.PLUS_MINUS)
+                acc -= value
 
             case "*":
                 value, i = expression(tokens, i + 1, acc, Precedence.TIMES_DIVIDE)
