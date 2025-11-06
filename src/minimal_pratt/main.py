@@ -8,6 +8,7 @@ class Precedence(enum.IntEnum):
     TIMES_DIVIDE = enum.auto()
     POWER = enum.auto()
     UNARY = enum.auto()
+    FACTORIAL = enum.auto()
 
 
 type Token = int | str
@@ -32,6 +33,9 @@ def precedence(token: Token) -> Precedence:
 
         case "^":
             return Precedence.POWER
+
+        case "!":
+            return Precedence.FACTORIAL
 
         case "eof":
             return Precedence.EOF
@@ -88,6 +92,15 @@ def expression(tokens: list[Token], i: int, level: int) -> tuple[int, int]:
                     prod *= acc
 
                 acc = prod
+
+            case "!":
+                prod = 1
+
+                for j in range(1, acc + 1):
+                    prod *= j
+
+                acc = prod
+                i += 1
 
             case _ as token:
                 raise ValueError(f"led: {token}")
