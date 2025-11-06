@@ -87,9 +87,6 @@ def expression(tokens: list[Token], i: int, acc: int, level: int) -> tuple[int, 
 
                 acc = prod
 
-            case "eof":
-                pass
-
             case _ as token:
                 raise ValueError(f"led: {token}")
 
