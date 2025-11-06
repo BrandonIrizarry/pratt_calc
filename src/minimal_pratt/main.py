@@ -86,10 +86,3 @@ def expression(tokens: list[Token], i: int, acc: int, level: int) -> tuple[int, 
                 raise ValueError(f"led: {token}")
 
     return acc, i
-
-
-t2: list[Token] = [2, "^", 3, "^", 2, "eof"]
-
-value = expression(t2, 0, 0, Precedence.EOF)
-
-print(value)
