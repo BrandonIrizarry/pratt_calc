@@ -18,7 +18,7 @@ def precedence(token: Token) -> Precedence:
     # match statement ("potential", meaning that they get checked in
     # the 'expression' while-loop condition.)
     match token:
-        case int() | ")":
+        case ")":
             return Precedence.LITERAL
 
         case "+":
