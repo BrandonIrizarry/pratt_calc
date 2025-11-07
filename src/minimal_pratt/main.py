@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import enum
+import math
 
 from more_itertools import peekable
 
@@ -105,15 +106,9 @@ class Parser:
                     acc *= self.expression(Precedence.TIMES_DIVIDE)
 
                 case "^":
-                    # Enforce right-association.
-                    value = self.expression(Precedence.POWER - 1)
-
-                    prod = 1
-
-                    for _ in range(value):
-                        prod *= acc
-
-                    acc = prod
+                    # Enforce right-association by subtracting 1 from
+                    # the precedence argument.
+                    acc = int(math.pow(acc, self.expression(Precedence.POWER - 1)))
 
                 case "!":
                     prod = 1
