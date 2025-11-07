@@ -111,6 +111,7 @@ class Parser:
                     acc = int(math.pow(acc, self.expression(Precedence.POWER - 1)))
 
                 case "!":
+                    # Factorial.
                     prod = 1
 
                     for j in range(1, acc + 1):
