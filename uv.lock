@@ -36,21 +36,23 @@ wheels = [
 name = "minimal-pratt"
 version = "0.1.0"
 source = { editable = "." }
+dependencies = [
+    { name = "more-itertools" },
+]
 
 [package.dev-dependencies]
 dev = [
     { name = "basedpyright" },
-    { name = "more-itertools" },
     { name = "pytest" },
     { name = "ruff" },
 ]
 
 [package.metadata]
+requires-dist = [{ name = "more-itertools", specifier = ">=10.8.0" }]
 
 [package.metadata.requires-dev]
 dev = [
     { name = "basedpyright", specifier = ">=1.32.1" },
-    { name = "more-itertools", specifier = ">=10.8.0" },
     { name = "pytest", specifier = ">=8.4.2" },
     { name = "ruff", specifier = ">=0.14.3" },
 ]

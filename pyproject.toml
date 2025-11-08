@@ -7,7 +7,9 @@ authors = [
     { name = "Brandon C. Irizarry", email = "brandon.irizarry@gmail.com" }
 ]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "more-itertools>=10.8.0",
+]
 
 [project.scripts]
 minimal-pratt = "minimal_pratt:main"
@@ -38,7 +40,6 @@ select = [
 [dependency-groups]
 dev = [
     "basedpyright>=1.32.1",
-    "more-itertools>=10.8.0",
     "pytest>=8.4.2",
     "ruff>=0.14.3",
 ]
