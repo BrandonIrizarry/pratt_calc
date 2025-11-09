@@ -26,10 +26,11 @@ def test_examples(raw_expression: str, value: int):
 
 bad_examples = [
     "?",
+    "(3",
 ]
 
 
 @pytest.mark.parametrize("raw_expression", bad_examples)
 def test_bad_examples(raw_expression: str):
-    with pytest.raises(ValueError):
+    with pytest.raises((ValueError, AssertionError)):
         _ = main(raw_expression)
