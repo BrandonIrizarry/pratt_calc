@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import enum
 import math
-from typing import final
+from collections import UserDict
+from typing import final, override
 
 from minimal_pratt.tokenizer import Stream, Token
 
@@ -28,33 +29,21 @@ class Precedence(enum.IntEnum):
     FACTORIAL = enum.auto()
 
 
-def precedence(token: Token) -> Precedence:
-    # It looks like only potential led-tokens need to appear in this
-    # match statement ("potential", meaning that they get checked in
-    # the while-loop condition.)
-    match token:
-        case ")":
-            return Precedence.NONE
+class LedPrecedenceTable(UserDict[Token, Precedence]):
+    """Specify precedence of LED-position tokens.
 
-        case "+":
-            return Precedence.PLUS_MINUS
+    Not all LED-position tokens are actual LEDs, since, for example,
+    'eof' serves no other function than to report a precedence level
+    of NONE. In most cases though, a LED-position token and a LED
+    token are the same thing.
 
-        case "-":
-            return Precedence.PLUS_MINUS
+    """
 
-        case "*":
-            return Precedence.TIMES_DIVIDE
-
-        case "^":
-            return Precedence.POWER
-
-        case "!":
-            return Precedence.FACTORIAL
-
-        case "eof":
-            return Precedence.NONE
-
-        case _:
+    @override
+    def __getitem__(self, token: Token):
+        try:
+            return self.data[token]
+        except KeyError:
             raise ValueError(f"Invalid token: '{token}'")
 
 
@@ -71,6 +60,18 @@ class Parser:
     that matter) after each such recursive call.
 
     """
+
+    led_precedence = LedPrecedenceTable(
+        {
+            "eof": Precedence.NONE,
+            ")": Precedence.NONE,
+            "+": Precedence.PLUS_MINUS,
+            "-": Precedence.PLUS_MINUS,
+            "*": Precedence.TIMES_DIVIDE,
+            "^": Precedence.POWER,
+            "!": Precedence.FACTORIAL,
+        }
+    )
 
     def __init__(self, stream: Stream):
         self.stream = stream
@@ -96,7 +97,7 @@ class Parser:
             case _ as token:
                 raise ValueError(f"nud: {token}")
 
-        while level < precedence(self.stream.peek()):
+        while level < self.led_precedence[self.stream.peek()]:
             current = next(self.stream)
 
             # LED
