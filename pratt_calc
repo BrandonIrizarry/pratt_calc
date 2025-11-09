@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+
+if command -v uv &>/dev/null; then
+    uv run src/pratt_calc/__init__.py "$@"
+else
+    # Use a locally-installed Python version
+    python src/pratt_calc/__init__.py "$@"
+fi

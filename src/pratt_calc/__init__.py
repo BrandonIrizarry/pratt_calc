@@ -22,3 +22,7 @@ def main(raw_expression: str) -> int:
     value = parser.expression()
 
     return value
+
+
+if __name__ == "__main__":
+    run()
