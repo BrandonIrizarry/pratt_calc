@@ -1,6 +1,5 @@
 import pytest
-
-from minimal_pratt import main
+from pratt_calc import main
 
 examples = [
     ("3", 3),

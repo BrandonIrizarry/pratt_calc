@@ -5,7 +5,7 @@ import math
 from collections import UserDict
 from typing import final, override
 
-from minimal_pratt.tokenizer import Stream, Token
+from pratt_calc.tokenizer import Stream, Token
 
 
 class Precedence(enum.IntEnum):

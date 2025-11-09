@@ -1,7 +1,7 @@
 import sys
 
-from minimal_pratt.parser import Parser
-from minimal_pratt.tokenizer import tokenize
+from pratt_calc.parser import Parser
+from pratt_calc.tokenizer import tokenize
 
 
 def run():
