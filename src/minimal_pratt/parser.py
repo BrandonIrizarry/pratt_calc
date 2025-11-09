@@ -8,6 +8,18 @@ from minimal_pratt.tokenizer import Stream, Token
 
 
 class Precedence(enum.IntEnum):
+    """Establish the various precedence levels.
+
+    Rather than being associated directly with a token, a given
+    precedence level gets passed in as an argument whenever a given
+    token is dispatched.
+
+    For example, subtraction is dispatched using PLUS_MINUS, while
+    negation is dispatched using UNARY, even though both are
+    associated with the '-' token.
+
+    """
+
     NONE = enum.auto()
     PLUS_MINUS = enum.auto()
     TIMES_DIVIDE = enum.auto()
