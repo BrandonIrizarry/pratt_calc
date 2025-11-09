@@ -77,6 +77,8 @@ class Parser:
         self.stream = stream
 
     def expression(self, level: int = Precedence.NONE) -> int:
+        """Pratt-parse an arithmetic expression, evaluating it."""
+
         # NUD
         current = next(self.stream)
 
