@@ -25,7 +25,7 @@ def tokenize(raw_expression: str) -> Generator[Token]:
     pattern = re.compile(r"\s*((\d+)|(.))")
 
     for mo in re.finditer(pattern, raw_expression):
-        token = mo.group()
+        token = mo.group(1)
 
         if token.isdigit():
             yield int(token)
