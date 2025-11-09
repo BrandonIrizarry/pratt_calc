@@ -97,7 +97,7 @@ class Parser:
                 assert next(self.stream) == ")"
 
             case _ as token:
-                raise ValueError(f"nud: {token}")
+                raise ValueError(f"Invalid nud: {token}")
 
         while level < self.led_precedence[self.stream.peek()]:
             current = next(self.stream)
@@ -128,6 +128,6 @@ class Parser:
                     acc = prod
 
                 case _ as token:
-                    raise ValueError(f"led: {token}")
+                    raise ValueError(f"Invalid led: {token}")
 
         return acc
