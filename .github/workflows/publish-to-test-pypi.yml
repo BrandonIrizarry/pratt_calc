@@ -33,5 +33,8 @@ jobs:
       - name: Pytest
         run: uv run pytest
 
-      - name: Publish
+      - name: Publish to PyPI
         run: uv publish
+
+      - name: Publish to TestPyPI
+        run: uv publish --index testpypi
