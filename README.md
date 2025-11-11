@@ -5,42 +5,58 @@ parsing algorithm.
 
 This takes inspiration from [this 2010 blog
 post](https://eli.thegreenplace.net/2010/01/02/top-down-operator-precedence-parsing)
-by Eli Bendersky, as well as a few other sources, which I'll touch on
-in a future blog post.
+by Eli Bendersky, as well as a few other sources:
+
+1. [Simple but Powerful Pratt Parsing](https://matklad.github.io/2020/04/13/simple-but-powerful-pratt-parsing.html)
+2. [Pratt Parsers: Expression Parsing Made Easy](https://journal.stuffwithstuff.com/2011/03/19/pratt-parsers-expression-parsing-made-easy/)
+3. [Compiling Expressions (Chapter 17 of Crafting Interpreters](https://craftinginterpreters.com/compiling-expressions.html)
 
 # Installation
 
-## Using `uv`
+Requires Python 3.13 or greater.
 
-1. [Make sure](https://docs.astral.sh/uv/getting-started/installation/) `uv` is
-installed in your system.
+To install,
 
-2. `git clone https://github.com/BrandonIrizarry/pratt_calc && cd !$`
+`pipx install pratt-calc`
 
-3. `uv sync`
+In some cases it may be necessary to specify the Python version
+manually, for example, in cases where your system Python is less than
+the required version, but you have a more recent Python accessible
+under a different binary:
 
-## Conventional
+`PIPX_DEFAULT_PYTHON=python3.13 pipx install pratt-calc`
 
-1. `git clone https://github.com/BrandonIrizarry/pratt_calc && cd !$`
+Hopefully this becomes less necessary in the future, as Linux
+distributions upgrade their default Python installations.
 
-2. `python -m venv venv`
+## Using `uvx`
 
-3. `source venv/bin/activate`
+If you're missing the required Python version but have `uv` installed,
+you can get away with this nice trick:
 
-4. `pip install .` 
+`uvx pipx install pratt-calc`
+
+This should automatically acquire the correct Python version for you.
+
+# Contributing
+
+If you'd like to work on this project, I recommend installing `uv`, then:
+
+```bash
+git clone https://github.com/BrandonIrizarry/pratt-calc
+cd pratt-calc
+uv sync --locked
+```
 
 # Usage
 
-`./pratt_calc $EXPRESSION`
+`pratt-calc $EXPRESSION`
 
 Example: 
 
-`./pratt_calc '3-4*5'`
+`pratt-calc 3-4*5`
 
 This should print -17 at the console.
 
-# TODO
 
-- [ ] add support for running the tests.
-- [ ] CI?
 

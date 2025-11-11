@@ -1,5 +1,5 @@
 [project]
-name = "pratt_calc"
+name = "pratt-calc"
 version = "0.1.0"
 description = "Arithmetic calculator which uses a Pratt parser"
 readme = "README.md"
@@ -21,7 +21,7 @@ dependencies = [
 ]
 
 [project.scripts]
-pratt_calc = "pratt_calc:run"
+pratt-calc = "pratt_calc:run"
 
 [project.urls]
 Homepage = "https://github.com/BrandonIrizarry/pratt_calc"
