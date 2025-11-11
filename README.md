@@ -9,7 +9,7 @@ by Eli Bendersky, as well as a few other sources:
 
 1. [Simple but Powerful Pratt Parsing](https://matklad.github.io/2020/04/13/simple-but-powerful-pratt-parsing.html)
 2. [Pratt Parsers: Expression Parsing Made Easy](https://journal.stuffwithstuff.com/2011/03/19/pratt-parsers-expression-parsing-made-easy/)
-3. [Compiling Expressions (Chapter 17 of Crafting Interpreters](https://craftinginterpreters.com/compiling-expressions.html)
+3. [Compiling Expressions (Chapter 17 of Crafting Interpreters)](https://craftinginterpreters.com/compiling-expressions.html)
 
 # Requirements
 
@@ -30,7 +30,7 @@ Or, if you have `uv` installed:
 
 # Contributing
 
-Install `uv`, then do:
+Install `uv`, then run:
 
 ```bash
 git clone https://github.com/BrandonIrizarry/pratt-calc
@@ -46,7 +46,7 @@ Example:
 
 `pratt-calc 3-4*5`
 
-This should print -17 at the console.
+This should print `-17` at the console.
 
 
 
