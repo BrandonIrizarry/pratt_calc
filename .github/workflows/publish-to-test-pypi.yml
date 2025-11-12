@@ -79,6 +79,8 @@ jobs:
       contents: read
 
     steps:
+      # Check out *before* downloading the distributions, so that we
+      # don't unintentionally erase them.
       - name: Checkout
         uses: actions/checkout@v5
 
