@@ -52,7 +52,7 @@ jobs:
       contents: read
 
     steps:
-      - name: Download all the dists
+      - name: Download the distributions
         uses: actions/download-artifact@v4
         with:
           name: python-package-distributions
@@ -79,14 +79,14 @@ jobs:
       contents: read
 
     steps:
-      - name: Download all the dists
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Download the distributions
         uses: actions/download-artifact@v4
         with:
           name: python-package-distributions
           path: dist/
-
-      - name: Checkout
-        uses: actions/checkout@v5
 
       - name: Install uv
         uses: astral-sh/setup-uv@v6
