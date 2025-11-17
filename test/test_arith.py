@@ -43,6 +43,8 @@ float_examples = [
     ("1 + tan(pi/4)", 1 / math.pow(math.cos(math.pi / 4), 2)),
     ("sin(1)^2", 0.7080734182735712),
     ("sin 1^2", 0.7080734182735712),
+    ("1 + cot(1)^2 - csc(1)^2", 0),
+    ("1 + tan(1)^2 - sec(1)^2", 0),
 ]
 
 
@@ -50,7 +52,7 @@ float_examples = [
 def test_float_examples(raw_expression: str, value: int | float):
     result = main(raw_expression)
 
-    assert math.isclose(result, value)
+    assert math.isclose(result, value, abs_tol=1e-10)
 
 
 bad_examples = [

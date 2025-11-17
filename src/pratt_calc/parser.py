@@ -99,6 +99,15 @@ class Parser:
             case "tan":
                 acc = math.tan(self.expression(Precedence.UNARY))
 
+            case "sec":
+                acc = 1 / math.cos(self.expression(Precedence.UNARY))
+
+            case "csc":
+                acc = 1 / math.sin(self.expression(Precedence.UNARY))
+
+            case "cot":
+                acc = 1 / math.tan(self.expression(Precedence.UNARY))
+
             case "-":
                 acc = -self.expression(Precedence.UNARY)
 
