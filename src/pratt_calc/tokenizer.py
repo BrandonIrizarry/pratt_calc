@@ -4,7 +4,7 @@ from collections.abc import Callable, Generator
 from more_itertools import peekable
 
 # See docstring for 'tokenize'.
-type Token = int | str
+type Token = int | float | str
 type Stream = peekable[Token]
 type tokenizer = Callable[[str], Generator[Token]]
 
@@ -27,16 +27,36 @@ def tokenize(raw_expression: str) -> Generator[Token]:
     Integers are yielded as Python ints; everything else is yielded as
     its original string representation.
 
+    Inspiration taken from
+
+    https://docs.python.org/3/library/re.html
+
     """
 
-    pattern = re.compile(r"\s*((\d+)|(.))")
+    token_specification = [
+        ("NUMBER", r"\d+(\.\d*)?"),
+        ("TOKEN", r"[-+*/!()^]"),
+        ("SKIP", r"[ \t]+"),
+        ("ERROR", r"."),
+    ]
+
+    token_regex = "|".join(f"(?P<{pair[0]}>{pair[1]})" for pair in token_specification)
+    pattern = re.compile(token_regex)
 
     for mo in re.finditer(pattern, raw_expression):
-        token = mo.group(1)
+        what = mo.lastgroup
+        value = mo.group()
 
-        if token.isdigit():
-            yield int(token)
-        else:
-            yield token
+        match what:
+            case "NUMBER":
+                yield float(value) if "." in value else int(value)
+            case "TOKEN":
+                yield value
+            case "SKIP":
+                continue
+            case "ERROR":
+                raise ValueError(f"Fatal: invalid token '{value}'")
+            case _:
+                raise ValueError(f"Fatal: unknown category '{what}:{value}'")
 
     yield "eof"
