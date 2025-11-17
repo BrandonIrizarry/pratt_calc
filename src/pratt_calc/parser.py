@@ -132,7 +132,7 @@ class Parser:
                 case "^":
                     # Enforce right-association by subtracting 1 from
                     # the precedence argument.
-                    acc = int(math.pow(acc, self.expression(Precedence.POWER - 1)))
+                    acc = math.pow(acc, self.expression(Precedence.POWER - 1))
 
                 case "!":
                     # Compute factorial by hand.
