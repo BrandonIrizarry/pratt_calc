@@ -39,6 +39,8 @@ float_examples = [
     ("sin (pi/2)", 1),
     ("sin(pi/2)^2 + cos(pi/2)^2", 1),
     ("tan(pi/4)", 1),
+    ("1 + 0.5", 1.5),
+    ("1 + tan(pi/4)", 1 / math.pow(math.cos(math.pi / 4), 2)),
 ]
 
 
