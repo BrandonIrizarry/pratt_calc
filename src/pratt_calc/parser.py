@@ -93,6 +93,12 @@ class Parser:
             case "sin":
                 acc = math.sin(self.expression(Precedence.UNARY))
 
+            case "cos":
+                acc = math.cos(self.expression(Precedence.UNARY))
+
+            case "tan":
+                acc = math.tan(self.expression(Precedence.UNARY))
+
             case "-":
                 acc = -self.expression(Precedence.UNARY)
 
