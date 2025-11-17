@@ -76,14 +76,14 @@ class Parser:
     def __init__(self, stream: Stream):
         self.stream = stream
 
-    def expression(self, level: int = Precedence.NONE) -> int:
+    def expression(self, level: int = Precedence.NONE) -> int | float:
         """Pratt-parse an arithmetic expression, evaluating it."""
 
         # NUD
         current = next(self.stream)
 
         match current:
-            case int() as num:
+            case int() | float() as num:
                 acc = num
 
             case "-":
@@ -119,8 +119,12 @@ class Parser:
                     acc = int(math.pow(acc, self.expression(Precedence.POWER - 1)))
 
                 case "!":
-                    # Factorial.
+                    # Compute factorial by hand.
+                    #
+                    # If ACC is a float, truncate it first to an int.
                     prod = 1
+
+                    acc = int(acc)
 
                     for j in range(1, acc + 1):
                         prod *= j
