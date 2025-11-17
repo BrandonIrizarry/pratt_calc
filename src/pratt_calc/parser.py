@@ -90,6 +90,9 @@ class Parser:
             case "pi":
                 acc = math.pi
 
+            case "sin":
+                acc = math.sin(self.expression(Precedence.UNARY))
+
             case "-":
                 acc = -self.expression(Precedence.UNARY)
 
