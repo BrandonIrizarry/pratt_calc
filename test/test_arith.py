@@ -1,3 +1,5 @@
+from math import pi
+
 import pytest
 
 from pratt_calc import main
@@ -32,6 +34,7 @@ float_examples = [
     ("5/2", 2.5),
     ("1+5/2", 3.5),
     ("100*(100 + 1)/2", 5050),
+    ("pi", pi),
 ]
 
 

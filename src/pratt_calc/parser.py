@@ -87,6 +87,9 @@ class Parser:
             case int() | float() as num:
                 acc = num
 
+            case "pi":
+                acc = math.pi
+
             case "-":
                 acc = -self.expression(Precedence.UNARY)
 
