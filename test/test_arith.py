@@ -1,4 +1,4 @@
-from math import pi
+import math
 
 import pytest
 
@@ -35,9 +35,10 @@ float_examples = [
     ("5/2", 2.5),
     ("1+5/2", 3.5),
     ("100*(100 + 1)/2", 5050),
-    ("pi", pi),
+    ("pi", math.pi),
     ("sin (pi/2)", 1),
     ("sin(pi/2)^2 + cos(pi/2)^2", 1),
+    ("tan(pi/4)", 1),
 ]
 
 
@@ -45,7 +46,7 @@ float_examples = [
 def test_float_examples(raw_expression: str, value: int | float):
     result = main(raw_expression)
 
-    assert result == value
+    assert math.isclose(result, value)
 
 
 bad_examples = [
