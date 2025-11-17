@@ -41,6 +41,7 @@ float_examples = [
     ("tan(pi/4)", 1),
     ("1 + 0.5", 1.5),
     ("1 + tan(pi/4)", 1 / math.pow(math.cos(math.pi / 4), 2)),
+    ("sin(1)^2", 0.7080734182735712),
 ]
 
 
