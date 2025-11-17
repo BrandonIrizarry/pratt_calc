@@ -68,6 +68,7 @@ class Parser:
             "+": Precedence.PLUS_MINUS,
             "-": Precedence.PLUS_MINUS,
             "*": Precedence.TIMES_DIVIDE,
+            "/": Precedence.TIMES_DIVIDE,
             "^": Precedence.POWER,
             "!": Precedence.FACTORIAL,
         }
@@ -112,6 +113,9 @@ class Parser:
 
                 case "*":
                     acc *= self.expression(Precedence.TIMES_DIVIDE)
+
+                case "/":
+                    acc /= self.expression(Precedence.TIMES_DIVIDE)
 
                 case "^":
                     # Enforce right-association by subtracting 1 from
