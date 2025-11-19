@@ -2,7 +2,7 @@ import math
 
 import pytest
 
-from pratt_calc import main
+from pratt_calc.main import main
 
 # The original set of examples, before floats were introduced.
 examples = [
