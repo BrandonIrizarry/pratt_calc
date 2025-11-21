@@ -22,6 +22,7 @@ class Precedence(enum.IntEnum):
     """
 
     NONE = enum.auto()
+    SEMICOLON = enum.auto()
     PLUS_MINUS = enum.auto()
     TIMES_DIVIDE = enum.auto()
     POWER = enum.auto()
@@ -71,6 +72,7 @@ class Parser:
             "/": Precedence.TIMES_DIVIDE,
             "^": Precedence.POWER,
             "!": Precedence.FACTORIAL,
+            ";": Precedence.SEMICOLON,
         }
     )
 
@@ -155,6 +157,12 @@ class Parser:
                         prod *= j
 
                     acc = prod
+
+                case ";":
+                    # Discard the left-hand side, keeping only the
+                    # right-hand side. This will hopefully be useful
+                    # for side-effects later.
+                    acc = self.expression(Precedence.SEMICOLON)
 
                 case _ as token:
                     raise ValueError(f"Invalid led: {token}")
