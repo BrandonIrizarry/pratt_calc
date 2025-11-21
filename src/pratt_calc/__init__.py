@@ -2,5 +2,10 @@ import sys
 
 from pratt_calc.main import evaluate
 
-if __name__ == "__main__":
+
+def run():
     print(evaluate(sys.argv[1]))
+
+
+if __name__ == "__main__":
+    run()
