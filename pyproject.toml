@@ -22,7 +22,7 @@ dependencies = [
 ]
 
 [project.scripts]
-pratt-calc = "pratt_calc:run"
+pratt-calc = "pratt_calc:app"
 
 [project.urls]
 Homepage = "https://github.com/BrandonIrizarry/pratt_calc"

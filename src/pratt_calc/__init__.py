@@ -1,11 +1,14 @@
-import sys
+import typer
 
 from pratt_calc.main import evaluate
 
 
-def run():
-    print(evaluate(sys.argv[1]))
+def app():
+    """Entry-point for project script."""
 
+    def cli(exp: str):
+        """Evaluate EXP as an arithmetic expression."""
 
-if __name__ == "__main__":
-    run()
+        print(evaluate(exp))
+
+    typer.run(cli)
