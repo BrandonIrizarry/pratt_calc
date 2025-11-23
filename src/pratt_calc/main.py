@@ -5,7 +5,7 @@ from pratt_calc.tokenizer import tokenize
 def evaluate(raw_expression: str) -> int | float:
     """The proper entry-point into the application.
 
-    Consume RAW_EXPRESSION, and compute an integer result.
+    Consume RAW_EXPRESSION, and compute a result.
 
     """
 
