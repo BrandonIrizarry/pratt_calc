@@ -13,12 +13,21 @@ def app():
     # Note that the name of this particular function is insigificant,
     # as the function only serves to wrap the logic used by
     # 'typer.run'
-    def cli(filename: Annotated[str, typer.Argument(help="Path to source file")] = ""):
+    def cli(
+        interactive: Annotated[
+            bool, typer.Option("--interactive", "-i", help="Launch the REPL.")
+        ] = False,
+        exp: Annotated[
+            str, typer.Option("--exp", "-e", help="Evaluate the given expression.")
+        ] = "",
+        filename: Annotated[str, typer.Argument(help="Path to source file")] = "",
+    ):
         """Pratt Calc application."""
 
-        if filename == "":
-            Repl().cmdloop()
-        else:
+        if exp != "":
+            print(evaluate(exp))
+
+        if filename != "":
             path = pathlib.Path(filename)
 
             if not path.exists():
@@ -33,5 +42,10 @@ def app():
                 code = f.read()
 
                 print(evaluate(code))
+
+        launch_repl = interactive or (filename == "" and exp == "")
+
+        if launch_repl:
+            Repl().cmdloop()
 
     typer.run(cli)
