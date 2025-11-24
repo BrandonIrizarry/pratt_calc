@@ -21,7 +21,17 @@ def app():
         ] = "",
         filename: Annotated[str, typer.Argument(help="Path to source file.")] = "",
     ):
-        """Pratt Calc application."""
+        """Pratt Calc application.
+
+        Without FILENAME or --eval/-e, launch the REPL.
+
+        Use --interactive/-i to launch the REPL even when FILENAME or
+        '-e/--eval' are provided.
+
+        This is useful for interactively inspecting the state of the
+        program.
+
+        """
 
         if exp != "":
             print(evaluate(exp))
