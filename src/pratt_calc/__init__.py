@@ -17,7 +17,7 @@ def app():
             bool, typer.Option("--interactive", "-i", help="Launch the REPL.")
         ] = False,
         exp: Annotated[
-            str, typer.Option("--exp", "-e", help="Evaluate the given expression.")
+            str, typer.Option("--eval", "-e", help="Evaluate the given expression.")
         ] = "",
         filename: Annotated[str, typer.Argument(help="Path to source file.")] = "",
     ):
