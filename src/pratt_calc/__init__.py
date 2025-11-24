@@ -19,7 +19,7 @@ def app():
         exp: Annotated[
             str, typer.Option("--exp", "-e", help="Evaluate the given expression.")
         ] = "",
-        filename: Annotated[str, typer.Argument(help="Path to source file")] = "",
+        filename: Annotated[str, typer.Argument(help="Path to source file.")] = "",
     ):
         """Pratt Calc application."""
 
