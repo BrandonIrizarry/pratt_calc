@@ -35,7 +35,7 @@ def tokenize(raw_expression: str) -> Generator[Token]:
 
     token_specification = [
         ("NUMBER", r"\d+(\.\d*)?"),
-        ("BUILTIN", r"pi|sin|cos|tan|sec|csc|cot"),
+        ("BUILTIN", r"pi|sin|cos|tan|sec|csc|cot|print"),
         ("TOKEN", r"[-+*/!()^;]"),
         ("SKIP", r"[ \t]+"),
         ("ERROR", r"."),

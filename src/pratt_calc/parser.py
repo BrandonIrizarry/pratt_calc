@@ -120,6 +120,10 @@ class Parser:
                 # so we skip it as we read it.
                 assert next(self.stream) == ")"
 
+            case "print":
+                acc = self.expression(Precedence.UNARY)
+                print(acc)
+
             case _ as token:
                 raise ValueError(f"Invalid nud: {token}")
 
