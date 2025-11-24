@@ -17,6 +17,17 @@ Requires Python 3.13 or greater.
 
 # Installation
 
+## pip
+
+Set up and activate a virtual environment, then:
+
+`pip install pratt-calc`
+
+## pipx (recommended)
+
+Using `pipx` enables you to globally install the application without
+worrying about virtual environments.
+
 `pipx install pratt-calc`
 
 In some cases it may be necessary to specify the Python version
