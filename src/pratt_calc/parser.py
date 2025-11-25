@@ -91,14 +91,20 @@ class Parser:
     def __init__(self, stream: Stream):
         self.stream = stream
 
-    def dealias(self, target_alias: str) -> int:
-        """Return address associated with locals alias."""
+    def dealias(self, alias: str) -> int:
+        """Return address associated with locals alias.
+
+        If alias doesn't exist yet, create it.
+
+        """
 
         for i, register in enumerate(self.registers):
-            if register.alias == target_alias:
+            if register.alias == alias:
                 return i
 
-        raise ValueError(f"Fatal: invalid local '{target_alias}'")
+        self.registers.append(Register(alias, 0))
+
+        return len(self.registers) - 1
 
     def expression(self, level: int = Precedence.NONE) -> int | float:
         """Pratt-parse an arithmetic expression, evaluating it."""

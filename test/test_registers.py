@@ -5,10 +5,10 @@ import pytest
 from pratt_calc.main import evaluate
 
 examples = [
-    ("0 <- 100 ; 1 <- 200; @0 + @1", 300),
-    ("0 <- 1 <- 2 <- 1000; @0 + @1 + @2", 3000),
-    ("0 <- 10; @0!", 3628800),
-    ("0 <- 1; 1 <- 1000; @@0", 1000),  # @@0 => @1 => 1000.
+    ("alice <- 100 ; bob <- 200; @alice + @bob", 300),
+    ("alice <- bob <- charlie <- 1000; @alice + @bob + @charlie", 3000),
+    ("alice <- 10; @alice!", 3628800),
+    ("alice <- bob; bob <- 1000; @@alice", 1000),  # @@alice => @bob => 1000.
 ]
 
 
