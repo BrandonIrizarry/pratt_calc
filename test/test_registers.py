@@ -13,7 +13,7 @@ examples = [
 
 
 @pytest.mark.parametrize("raw_expression, value", examples)
-def test_float_examples(raw_expression: str, value: int | float):
+def test_examples(raw_expression: str, value: int | float):
     result = evaluate(raw_expression)
 
     assert math.isclose(result, value, abs_tol=1e-10)
