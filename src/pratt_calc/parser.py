@@ -132,7 +132,11 @@ class Parser:
 
             case "@":
                 # Use 'index' as an index into the registers.
-                index = int(self.expression(Precedence.DEREFERENCE))
+                #
+                # Note that '@' should be right-associative, in case
+                # we'd like to do some double (or higher)
+                # dereferencing, for example, '@@0'.
+                index = int(self.expression(Precedence.DEREFERENCE - 1))
 
                 acc = self.registers[index]
 
