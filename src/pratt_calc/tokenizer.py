@@ -1,5 +1,6 @@
 import re
 from collections.abc import Callable, Generator
+from functools import wraps
 from typing import Literal
 
 from more_itertools import peekable
@@ -13,6 +14,7 @@ type tokenizer = Callable[[str], Generator[Token]]
 def _stream(fn: tokenizer) -> Callable[[str], Stream]:
     """Convert the tokenizer's generator into a peekable."""
 
+    @wraps(fn)
     def wrapper(raw_expression: str) -> Stream:
         gen = fn(raw_expression)
 
