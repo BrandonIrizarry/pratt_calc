@@ -3,9 +3,8 @@
 An arithmetic expression calculator in Python, demoing the Pratt
 parsing algorithm.
 
-This takes inspiration from [this 2010 blog
-post](https://eli.thegreenplace.net/2010/01/02/top-down-operator-precedence-parsing)
-by Eli Bendersky, as well as a few other sources:
+This takes inspiration from [this excellent 2010 blog post](https://eli.thegreenplace.net/2010/01/02/top-down-operator-precedence-parsing), as
+well as a few other sources:
 
 1. [Simple but Powerful Pratt Parsing](https://matklad.github.io/2020/04/13/simple-but-powerful-pratt-parsing.html)
 2. [Pratt Parsers: Expression Parsing Made Easy](https://journal.stuffwithstuff.com/2011/03/19/pratt-parsers-expression-parsing-made-easy/)
