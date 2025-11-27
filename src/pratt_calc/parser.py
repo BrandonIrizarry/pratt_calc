@@ -86,8 +86,9 @@ class Parser:
         }
     )
 
+    registers: list[Register] = []
+
     def __init__(self, stream: Stream):
-        self.registers: list[Register] = []
         self.stream = stream
 
     def dealias(self, alias: str) -> int:
