@@ -196,7 +196,7 @@ parse(level):
     acc ← nud_dispatch(t)                           # Calls 'parse' recursively.
 
     while level < precedence(peek(stream)):
-        t ← stream.next()
+        t ← next(stream)
         acc ← led_dispatch(t, acc)                  # Calls 'parse' recursively.
 
     return acc
