@@ -156,7 +156,7 @@ class Parser:
                 #
                 # Note that '@' should be right-associative, in case
                 # we'd like to do some double (or higher)
-                # dereferencing, for example, '@@0'.
+                # dereferencing, for example, '@@alice'.
                 index = int(self.expression(Precedence.DEREFERENCE - 1))
 
                 # Of course, here we're only interested in the
