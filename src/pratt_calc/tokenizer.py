@@ -38,8 +38,7 @@ def tokenize(raw_expression: str) -> Generator[Token]:
 
     token_specification = [
         ("NUMBER", r"\d+(\.\d*)?"),
-        ("BUILTIN", r"pi|sin|cos|tan|sec|csc|cot|print|<-"),
-        ("TOKEN", r"[-+*/!()^;@]"),
+        ("OPERATOR", r"pi|sin|cos|tan|sec|csc|cot|print|<-|[-+*/!()^;@]"),
         ("IDENTIFIER", r"[a-zA-Z_][\w]*"),
         ("SKIP", r"[ \t]+"),
         ("ERROR", r"."),
@@ -55,7 +54,7 @@ def tokenize(raw_expression: str) -> Generator[Token]:
         match what:
             case "NUMBER":
                 yield float(value) if "." in value else int(value)
-            case "BUILTIN" | "TOKEN":
+            case "OPERATOR":
                 yield value
             case "IDENTIFIER":
                 yield ("IDENTIFIER", value)
