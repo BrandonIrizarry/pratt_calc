@@ -6,7 +6,7 @@ from collections import UserDict
 from dataclasses import dataclass
 from typing import final, override
 
-from pratt_calc.tokenizer import Stream, Token
+from pratt_calc.tokenizer import Operator, Stream, Token, Type
 
 
 @dataclass
@@ -73,16 +73,16 @@ class Parser:
 
     led_precedence = LedPrecedenceTable(
         {
-            "eof": Precedence.NONE,
-            ")": Precedence.NONE,
-            "+": Precedence.PLUS_MINUS,
-            "-": Precedence.PLUS_MINUS,
-            "*": Precedence.TIMES_DIVIDE,
-            "/": Precedence.TIMES_DIVIDE,
-            "^": Precedence.POWER,
-            "!": Precedence.FACTORIAL,
-            ";": Precedence.SEMICOLON,
-            "<-": Precedence.ASSIGNMENT,
+            Operator.eof: Precedence.NONE,
+            Operator.rparen: Precedence.NONE,
+            Operator.plus: Precedence.PLUS_MINUS,
+            Operator.minus: Precedence.PLUS_MINUS,
+            Operator.times: Precedence.TIMES_DIVIDE,
+            Operator.divide: Precedence.TIMES_DIVIDE,
+            Operator.power: Precedence.POWER,
+            Operator.factorial: Precedence.FACTORIAL,
+            Operator.semicolon: Precedence.SEMICOLON,
+            Operator.assign: Precedence.ASSIGNMENT,
         }
     )
 
@@ -112,82 +112,89 @@ class Parser:
         # NUD
         current = next(self.stream)
 
-        match current:
-            case int() | float() as num:
-                acc = num
+        match current.tag:
+            case Type.NUMBER:
+                acc = current.what
 
-            case "pi":
-                acc = math.pi
+            case Type.IDENTIFIER:
+                # FIXME: for now, we force conversion to a string,
+                # though it may be wiser for tokens to only carry
+                # strings, and this parser would then dispatch the
+                # string cargo appropriately.
+                acc = self.dealias(str(current.what))
 
-            case "sin":
-                acc = math.sin(self.expression(Precedence.UNARY))
+            case Type.EOF:
+                raise ValueError("Invalid eof")
 
-            case "cos":
-                acc = math.cos(self.expression(Precedence.UNARY))
+            case Type.OPERATOR:
+                match current:
+                    case Operator.pi:
+                        acc = math.pi
 
-            case "tan":
-                acc = math.tan(self.expression(Precedence.UNARY))
+                    case Operator.sin:
+                        acc = math.sin(self.expression(Precedence.UNARY))
 
-            case "sec":
-                acc = 1 / math.cos(self.expression(Precedence.UNARY))
+                    case Operator.cos:
+                        acc = math.cos(self.expression(Precedence.UNARY))
 
-            case "csc":
-                acc = 1 / math.sin(self.expression(Precedence.UNARY))
+                    case Operator.tan:
+                        acc = math.tan(self.expression(Precedence.UNARY))
 
-            case "cot":
-                acc = 1 / math.tan(self.expression(Precedence.UNARY))
+                    case Operator.sec:
+                        acc = 1 / math.cos(self.expression(Precedence.UNARY))
 
-            case "-":
-                acc = -self.expression(Precedence.UNARY)
+                    case Operator.csc:
+                        acc = 1 / math.sin(self.expression(Precedence.UNARY))
 
-            case "(":
-                acc = self.expression(Precedence.NONE)
+                    case Operator.cot:
+                        acc = 1 / math.tan(self.expression(Precedence.UNARY))
 
-                # We don't drive parsing/evaluation with right-paren,
-                # so we skip it as we read it.
-                assert next(self.stream) == ")"
+                    case Operator.minus:
+                        acc = -self.expression(Precedence.UNARY)
 
-            case "print":
-                acc = self.expression(Precedence.UNARY)
-                print(acc)
+                    case Operator.lparen:
+                        acc = self.expression(Precedence.NONE)
 
-            case "@":
-                # Use 'index' as an index into the registers.
-                #
-                # Note that '@' should be right-associative, in case
-                # we'd like to do some double (or higher)
-                # dereferencing, for example, '@@alice'.
-                index = int(self.expression(Precedence.DEREFERENCE - 1))
+                        # We don't drive parsing/evaluation with right-paren,
+                        # so we skip it as we read it.
+                        assert next(self.stream) == Operator.rparen
 
-                # Retrieve the programmer-stored value.
-                acc = self.registers[index].value
+                    case Operator.prt:
+                        acc = self.expression(Precedence.UNARY)
+                        print(acc)
 
-            case t if type(t) is tuple:
-                _, alias = t
+                    case Operator.at:
+                        # Use 'index' as an index into the registers.
+                        #
+                        # Note that '@' should be right-associative, in case
+                        # we'd like to do some double (or higher)
+                        # dereferencing, for example, '@@alice'.
+                        index = int(self.expression(Precedence.DEREFERENCE - 1))
 
-                acc = self.dealias(alias)
+                        # Retrieve the programmer-stored value.
+                        acc = self.registers[index].value
 
-            case _ as token:
-                raise ValueError(f"Invalid nud: {token}")
+                    case _ as nonexistent:
+                        raise ValueError(f"Nonexistent operator '{nonexistent}'")
 
         while level < self.led_precedence[self.stream.peek()]:
             current = next(self.stream)
 
             # LED
             match current:
-                case "+":
+                case Operator.plus:
                     acc += self.expression(Precedence.PLUS_MINUS)
 
-                case "-":
+                case Operator.minus:
                     acc -= self.expression(Precedence.PLUS_MINUS)
 
-                case "*":
+                case Operator.times:
                     acc *= self.expression(Precedence.TIMES_DIVIDE)
 
-                case "/":
+                case Operator.divide:
                     acc /= self.expression(Precedence.TIMES_DIVIDE)
 
-                case "^":
+                case Operator:
                     # Enforce right-association by subtracting 1 from
                     # the precedence argument.
                     acc = math.pow(acc, self.expression(Precedence.POWER - 1))
@@ -203,7 +210,7 @@ class Parser:
                     for j in range(1, acc + 1):
                         prod *= j
 
-                    acc = prod
+                        acc = prod
 
                 case ";":
                     # Discard the left-hand side, keeping only the

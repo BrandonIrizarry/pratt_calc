@@ -1,12 +1,50 @@
+import enum
 import re
 from collections.abc import Callable, Generator
 from functools import wraps
-from typing import Literal
+from types import SimpleNamespace
+from typing import NamedTuple, final
 
 from more_itertools import peekable
 
+
+class Type(enum.Enum):
+    NUMBER = enum.auto()
+    OPERATOR = enum.auto()
+    IDENTIFIER = enum.auto()
+    EOF = enum.auto()
+
+
+class Token(NamedTuple):
+    tag: Type
+    what: str | int | float
+
+
+@final
+class Operator(SimpleNamespace):
+    eof = Token(Type.EOF, "eof")
+    lparen = Token(Type.OPERATOR, "(")
+    rparen = Token(Type.OPERATOR, ")")
+    prt = Token(Type.OPERATOR, "print")
+    at = Token(Type.OPERATOR, "@")
+    plus = Token(Type.OPERATOR, "+")
+    minus = Token(Type.OPERATOR, "-")
+    times = Token(Type.OPERATOR, "*")
+    divide = Token(Type.OPERATOR, "/")
+    power = Token(Type.OPERATOR, "^")
+    factorial = Token(Type.OPERATOR, "!")
+    semicolon = Token(Type.OPERATOR, ";")
+    assign = Token(Type.OPERATOR, "<-")
+    pi = Token(Type.OPERATOR, "pi")
+    sin = Token(Type.OPERATOR, "sin")
+    cos = Token(Type.OPERATOR, "cos")
+    tan = Token(Type.OPERATOR, "tan")
+    sec = Token(Type.OPERATOR, "sec")
+    csc = Token(Type.OPERATOR, "csc")
+    cot = Token(Type.OPERATOR, "cot")
+
+
 # See docstring for 'tokenize'.
-type Token = int | float | str | tuple[Literal["IDENTIFIER"], str]
 type Stream = peekable[Token]
 type tokenizer = Callable[[str], Generator[Token]]
 
@@ -53,11 +91,11 @@ def tokenize(raw_expression: str) -> Generator[Token]:
 
         match what:
             case "NUMBER":
-                yield float(value) if "." in value else int(value)
+                yield Token(Type.NUMBER, float(value) if "." in value else int(value))
             case "OPERATOR":
-                yield value
+                yield Token(Type.OPERATOR, value)
             case "IDENTIFIER":
-                yield ("IDENTIFIER", value)
+                yield Token(Type.IDENTIFIER, value)
             case "SKIP":
                 continue
             case "ERROR":
@@ -65,4 +103,4 @@ def tokenize(raw_expression: str) -> Generator[Token]:
             case _:
                 raise ValueError(f"Fatal: unknown category '{what}:{value}'")
 
-    yield "eof"
+    yield Token(Type.EOF, "eof")
