@@ -58,7 +58,7 @@ class LedPrecedenceTable(UserDict[Token, Precedence]):
 
 
 @final
-class Parser:
+class Evaluator:
     """Pratt-parse a list of tokens.
 
     The tokens are converted internally into a more_itertools

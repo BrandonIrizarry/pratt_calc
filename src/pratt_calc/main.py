@@ -1,6 +1,6 @@
 import pathlib
 
-from pratt_calc.parser import Parser
+from pratt_calc.parser import Evaluator
 from pratt_calc.tokenizer import tokenize
 
 
@@ -12,7 +12,7 @@ def evaluate(raw_expression: str) -> int | float:
     """
 
     stream = tokenize(raw_expression)
-    parser = Parser(stream)
+    parser = Evaluator(stream)
 
     value = parser.expression()
 
