@@ -176,9 +176,13 @@ class Parser:
 
                     case Op.quote:
                         start = len(self.heap)
+                        expr: list[Token] = []
 
                         while (t := next(self.stream)) != Op.endquote:
-                            self.heap.append(t)
+                            expr.append(t)
+
+                        self.heap.append(Token(Type.INT, str(len(expr))))
+                        self.heap.extend(expr)
 
                         acc = start
 
