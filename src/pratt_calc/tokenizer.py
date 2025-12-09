@@ -3,7 +3,7 @@ import re
 from collections.abc import Callable, Generator
 from functools import wraps
 from types import SimpleNamespace
-from typing import NamedTuple, final
+from typing import NamedTuple, final, override
 
 from more_itertools import peekable
 
@@ -23,6 +23,10 @@ class Token(NamedTuple):
 
     tag: Type
     what: str
+
+    @override
+    def __str__(self):
+        return f"({self.tag.name} {self.what})"
 
 
 @final
