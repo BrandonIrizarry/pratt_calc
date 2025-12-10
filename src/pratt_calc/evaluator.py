@@ -228,13 +228,6 @@ class Evaluator:
 
                         acc = start
 
-                    case Op.comment:
-                        # See remarks under 'Op.quote' case.
-                        while (t := next(self.stream)) != Op.endcomment:
-                            pass
-
-                        acc = self.expression()
-
                     case Op.call:
                         # First evaluate the corresponding register
                         # address, then dereference it.

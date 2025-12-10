@@ -62,8 +62,6 @@ class Op(SimpleNamespace):
     quote = Token(Type.OPERATOR, "{")
     endquote = Token(Type.OPERATOR, "}")
     call = Token(Type.OPERATOR, "call")
-    comment = Token(Type.OPERATOR, "/*")
-    endcomment = Token(Type.OPERATOR, "*/")
 
 
 # See docstring for 'tokenize'.
@@ -96,11 +94,14 @@ def tokenize(raw_expression: str) -> Generator[Token]:
 
     """
 
+    # First remove comments from source text.
+    raw_expression = re.sub(r"/\*.*?\*/", "", raw_expression, flags=re.DOTALL)
+
     token_specification = [
         ("NUMBER", r"\d+(\.\d*)?"),
         (
             "OPERATOR",
-            r"pi|sin|cos|tan|sec|csc|cot|print|call|<-|/\*|\*/|[-+*/!()^;@{}]",
+            r"pi|sin|cos|tan|sec|csc|cot|print|call|<-|[-+*/!()^;@{}]",
         ),
         ("IDENTIFIER", r"[a-zA-Z_][\w]*"),
         ("SKIP", r"[ \t]+"),
