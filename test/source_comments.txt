@@ -8,11 +8,11 @@ any tokens.
 */
 
 /* Store some code to compute the fifth triangle number. */
-triangle_5 <- {1 + 2 + 3 + 4 + 5} ;
-result <- {call triangle_5} ;
+triangle_5 <- {1 + 2 + 3 + 4 + 5}
+result <- {call triangle_5}
 
 /* This should print 10. */
-print(@result) ;
+print(@result)
 
 /* This should print out 15. */
-print(call result) ;
+print(call result)

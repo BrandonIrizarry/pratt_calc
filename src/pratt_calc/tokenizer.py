@@ -97,6 +97,11 @@ def tokenize(raw_expression: str) -> Generator[Token]:
     # First remove comments from source text.
     raw_expression = re.sub(r"/\*.*?\*/", "", raw_expression, flags=re.DOTALL)
 
+    # Next, replace newlines with semicolons. This frees the
+    # programmer from having to use semicolons explicitly if two
+    # statements are separated by a newline. :)
+    raw_expression = re.sub(r"\n+", ";", raw_expression)
+
     token_specification = [
         ("NUMBER", r"\d+(\.\d*)?"),
         (
