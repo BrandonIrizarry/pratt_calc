@@ -55,7 +55,7 @@ class LedPrecedenceTable(UserDict[Token, Precedence]):
         try:
             return self.data[token]
         except KeyError:
-            raise ValueError(f"Invalid token: '{token}'")
+            raise ValueError(f"Invalid led: '{token}'")
 
 
 @final
