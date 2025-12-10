@@ -88,8 +88,17 @@ class Evaluator:
     )
 
     def __init__(self):
+        """Initialize the evaluator object.
+
+        In particular initialize an empty token stream, to which
+        EVALUATE will later append tokens comprising the expression to
+        be evaluated.
+
+        """
+
         # Initialize an empty token stream.
         self.stream = tokenize("")
+
         self.registers: list[Register] = []
         self.heap: list[Token] = []
 
