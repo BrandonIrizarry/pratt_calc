@@ -60,15 +60,12 @@ class LedPrecedenceTable(UserDict[Token, Precedence]):
 
 @final
 class Evaluator:
-    """Pratt-parse a list of tokens.
+    """An environment for evaluating expressions.
 
-    The tokens are converted internally into a more_itertools
-    'peekable' object, basically a generator.
-
-    This class enables us to encapsulate the stream as global state
-    usable across recursive calls to 'expression', freeing us from
-    having to return the stream (or any kind of placeholder state, for
-    that matter) after each such recursive call.
+    Encapsulates a stream of Token objects as global state usable
+    across recursive calls to 'expression', freeing us from having to
+    return the stream (or any kind of placeholder state, for that
+    matter) after each such recursive call.
 
     """
 
