@@ -252,9 +252,9 @@ class Evaluator:
 
                     case Op.semicolon:
                         # As a nud, ';' is a no-op. This lets users
-                        # input empty "statements" like ';;', or else
-                        # lets a future preprocessing step inject
-                        # semicolons where needed.
+                        # input empty "statements" like ';;'. It also
+                        # lets a preprocessing step inject semicolons
+                        # in place of newlines.
                         acc = self.expression(Precedence.NONE)
 
                     case _ as nonexistent:
