@@ -15,6 +15,7 @@ class Type(enum.Enum):
     FLOAT = enum.auto()
     OPERATOR = enum.auto()
     IDENTIFIER = enum.auto()
+    ERROR = enum.auto()
     EOF = enum.auto()
 
 
@@ -61,6 +62,8 @@ class Op(SimpleNamespace):
     quote = Token(Type.OPERATOR, "{")
     endquote = Token(Type.OPERATOR, "}")
     call = Token(Type.OPERATOR, "call")
+    comment = Token(Type.OPERATOR, "/*")
+    endcomment = Token(Type.OPERATOR, "*/")
 
 
 # See docstring for 'tokenize'.
@@ -95,7 +98,10 @@ def tokenize(raw_expression: str) -> Generator[Token]:
 
     token_specification = [
         ("NUMBER", r"\d+(\.\d*)?"),
-        ("OPERATOR", r"pi|sin|cos|tan|sec|csc|cot|print|call|<-|[-+*/!()^;@{}]"),
+        (
+            "OPERATOR",
+            r"pi|sin|cos|tan|sec|csc|cot|print|call|<-|/\*|\*/|[-+*/!()^;@{}]",
+        ),
         ("IDENTIFIER", r"[a-zA-Z_][\w]*"),
         ("SKIP", r"[ \t]+"),
         ("ERROR", r"."),
@@ -125,7 +131,7 @@ def tokenize(raw_expression: str) -> Generator[Token]:
                 continue
 
             case "ERROR":
-                raise ValueError(f"Fatal: invalid token '{value}'")
+                yield Token(Type.ERROR, value)
 
             case _:
                 raise ValueError(f"Fatal: unknown category '{what}:{value}'")

@@ -225,6 +225,13 @@ class Evaluator:
 
                         acc = start
 
+                    case Op.comment:
+                        # See remarks under 'Op.quote' case.
+                        while (t := next(self.stream)) != Op.endcomment:
+                            pass
+
+                        acc = self.expression()
+
                     case Op.call:
                         # First evaluate the corresponding register
                         # address, then dereference it.
@@ -246,7 +253,7 @@ class Evaluator:
                         acc = self.expression(Precedence.NONE)
 
                     case _ as nonexistent:
-                        raise ValueError(f"Nonexistent operator '{nonexistent}'")
+                        raise ValueError(f"Invalid nud: '{nonexistent}'")
 
         while level < self.led_precedence[self.stream.peek()]:
             current = next(self.stream)
