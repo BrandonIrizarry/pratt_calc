@@ -216,7 +216,7 @@ class Evaluator:
                         string_addr = len_addr + 1
                         string = self.heap[string_addr : string_addr + expr_len]
 
-                        print(string)
+                        print(" ".join([s.what for s in string]))
 
                         acc = self.expression(Precedence.NONE)
 
