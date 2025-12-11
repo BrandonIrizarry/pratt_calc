@@ -65,3 +65,13 @@ Type 'help' or '?' to list all commands."""
 
         print()
         return True
+
+    def do_heap(self, _):
+        """Print the current heap."""
+
+        print([str(t) for t in self.ev.heap])
+
+    def do_locals(self, _):
+        """Print all locals."""
+
+        print([str(r) for r in self.ev.registers])
