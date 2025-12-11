@@ -206,26 +206,18 @@ class Evaluator:
                         assert next(self.stream) == Op.rparen
 
                     case Op.prt:
-                        # First evaluate the corresponding register
-                        # address, then dereference it.
-                        register_addr = int(self.expression(Precedence.UNARY))
-
-                        if register_addr >= len(self.registers):
-                            raise ValueError(f"Illegal local address: {register_addr}")
-
-                        type_addr = int(self.registers[register_addr].value)
+                        type_addr = int(self.expression(Precedence.UNARY))
                         type_t = self.heap[type_addr]
 
                         if type_t != Internal.string:
                             raise ValueError(f"Illegal string-address: {type_addr}")
 
                         len_addr = type_addr + 1
-                        expr_len_t = self.heap[len_addr]
-                        expr_len = int(expr_len_t.what)
+                        string_len = int(self.heap[len_addr].what)
 
                         # Get the address of the string itself.
                         string_addr = len_addr + 1
-                        string = self.heap[string_addr : string_addr + expr_len]
+                        string = self.heap[string_addr : string_addr + string_len]
 
                         print(" ".join([s.what for s in string]))
 
@@ -259,26 +251,19 @@ class Evaluator:
                         acc = start
 
                     case Op.call:
-                        # First evaluate the corresponding register
-                        # address, then dereference it.
-                        register_addr = int(self.expression(Precedence.UNARY))
-
-                        if register_addr >= len(self.registers):
-                            raise ValueError(f"Illegal local address: {register_addr}")
-
-                        type_addr = int(self.registers[register_addr].value)
+                        type_addr = int(self.expression(Precedence.UNARY))
                         type_t = self.heap[type_addr]
 
                         if type_t != Internal.code:
                             raise ValueError(f"Illegal call-address: {type_addr}")
 
+                        # Get the length address.
                         len_addr = type_addr + 1
-                        expr_len_t = self.heap[len_addr]
-                        expr_len = int(expr_len_t.what)
+                        code_len = int(self.heap[len_addr].what)
 
-                        # Get the address of the code itself.
+                        # Get the code address.
                         code_addr = len_addr + 1
-                        code = self.heap[code_addr : code_addr + expr_len]
+                        code = self.heap[code_addr : code_addr + code_len]
                         self.stream.prepend(*code)
 
                         acc = self.expression(Precedence.NONE)
@@ -305,17 +290,11 @@ class Evaluator:
 
                     case Op.strcast:
                         value = self.expression(Precedence.UNARY)
-                        addr = len(self.heap)
+                        acc = len(self.heap)
 
                         self.heap.append(Internal.string)
                         self.heap.append(Token(Type.INT, "1"))
                         self.heap.append(Token(Type.INT, f"{value}"))
-
-                        pseudo_local = Register(f"_{Register.new_pseudo_index()}", addr)
-                        self.registers.append(pseudo_local)
-
-                        # This part is crucial.
-                        acc = len(self.registers) - 1
 
                     case _ as nonexistent:
                         raise ValueError(f"Invalid nud: '{nonexistent}'")
