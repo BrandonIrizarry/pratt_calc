@@ -5,22 +5,15 @@ import math
 import pathlib
 from collections import UserDict
 from dataclasses import dataclass
-from typing import ClassVar, final, override
+from typing import final, override
 
 from pratt_calc.tokenizer import Internal, Op, Token, Type, tokenize
 
 
 @dataclass
 class Register:
-    pseudo_index: ClassVar[int] = 0
     alias: str
     value: int | float
-
-    @classmethod
-    def new_pseudo_index(cls) -> int:
-        cls.pseudo_index += 1
-
-        return cls.pseudo_index
 
 
 class Precedence(enum.IntEnum):
