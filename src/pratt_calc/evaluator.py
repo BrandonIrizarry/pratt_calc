@@ -230,8 +230,23 @@ class Evaluator:
                         start = len(self.heap)
                         code_expr: list[Token] = []
 
-                        while (t := next(self.stream)) != Op.endquote:
-                            code_expr.append(t)
+                        quote_stack = 1
+
+                        while True:
+                            t = next(self.stream)
+
+                            if t == Op.quote:
+                                quote_stack += 1
+                                code_expr.append(t)
+                            elif t == Op.endquote:
+                                quote_stack -= 1
+
+                                if quote_stack == 0:
+                                    break
+                                else:
+                                    code_expr.append(t)
+                            else:
+                                code_expr.append(t)
 
                         self.heap.append(Internal.code)
                         self.heap.append(Token(Type.INT, str(len(code_expr))))
