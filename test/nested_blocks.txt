@@ -1,0 +1,9 @@
+all <- { x <- {10 + 10} ; y <- {10 * 10} ; z <- {10^10} }
+
+call all
+
+print(str call x)
+
+print(str call y)
+
+print(str call z)

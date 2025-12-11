@@ -5,6 +5,7 @@ from pratt_calc.evaluator import Evaluator
 examples = [
     ("test/source.txt", ["20"]),
     ("test/source_comments.txt", ["11", "15"]),
+    ("test/nested_blocks.txt", ["20", "100", "10000000000.0"]),
 ]
 
 
