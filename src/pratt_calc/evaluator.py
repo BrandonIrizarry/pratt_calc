@@ -164,13 +164,20 @@ class Evaluator:
                 acc = float(current.what)
 
             case Type.IDENTIFIER:
-                acc = self.dealias(current.what)
+                rindex = self.dealias(current.what)
+
+                # We cheat a little here: if the next token is '<-',
+                # this identifier token is in a left-hand-side
+                # position of an assignment operation, and so the
+                # token should evaluate to the register index, just as
+                # it did originally.
+                if (t := self.stream.peek()) == Op.assign:
+                    acc = rindex
+                else:
+                    acc = self.registers[rindex].value
 
             case Type.EOF:
                 acc = 0
-
-            case Type.ERROR | Type.HEAP:
-                raise ValueError(f"Invalid token: '{current}'")
 
             case Type.OPERATOR:
                 match current:
@@ -222,17 +229,6 @@ class Evaluator:
                         print(" ".join([s.what for s in string]))
 
                         acc = self.expression(Precedence.NONE)
-
-                    case Op.at:
-                        # Use 'index' as an index into the registers.
-                        #
-                        # Note that '@' should be right-associative, in case
-                        # we'd like to do some double (or higher)
-                        # dereferencing, for example, '@@alice'.
-                        index = int(self.expression(Precedence.DEREFERENCE - 1))
-
-                        # Retrieve the programmer-stored value.
-                        acc = self.registers[index].value
 
                     case Op.quote:
                         # Note that this case doesn't call
@@ -298,6 +294,9 @@ class Evaluator:
 
                     case _ as nonexistent:
                         raise ValueError(f"Invalid nud: '{nonexistent}'")
+
+            case _:
+                raise ValueError(f"Invalid token: '{current}'")
 
         while level < self.led_precedence[self.stream.peek()]:
             current = next(self.stream)

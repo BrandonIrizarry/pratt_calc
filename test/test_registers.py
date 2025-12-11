@@ -5,10 +5,9 @@ import pytest
 from pratt_calc.evaluator import Evaluator
 
 examples = [
-    ("alice <- 100 ; bob <- 200; @alice + @bob", 300),
-    ("alice <- bob <- charlie <- 1000; @alice + @bob + @charlie", 3000),
-    ("alice <- 10; @alice!", 3628800),
-    ("alice <- bob; bob <- 1000; @@alice", 1000),  # @@alice => @bob => 1000.
+    ("alice <- 100 ; bob <- 200; alice + bob", 300),
+    ("alice <- bob <- charlie <- 1000; alice + bob + charlie", 3000),
+    ("alice <- 10; alice!", 3628800),
 ]
 
 

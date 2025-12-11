@@ -122,7 +122,7 @@ def tokenize(raw_expression: str) -> Generator[Token]:
         ("NUMBER", r"\d+(\.\d*)?"),
         (
             "OPERATOR",
-            r"pi|sin|cos|tan|sec|csc|cot|print|call|str|<-|[-+*/!()^;@{}\"]",
+            r"pi|sin|cos|tan|sec|csc|cot|print|call|str|<-|[-+*/!()^;{}\"]",
         ),
         ("IDENTIFIER", r"[a-zA-Z_][\w]*"),
         ("SKIP", r"[ \t]+"),
@@ -153,7 +153,7 @@ def tokenize(raw_expression: str) -> Generator[Token]:
                 continue
 
             case "ERROR":
-                yield Token(Type.ERROR, value)
+                raise ValueError(f"Bad token: '{value}'")
 
             case _:
                 raise ValueError(f"Fatal: unknown category '{what}:{value}'")
