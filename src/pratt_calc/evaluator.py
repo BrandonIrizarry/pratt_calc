@@ -167,7 +167,7 @@ class Evaluator:
 
         return self.expression(Precedence.NONE)
 
-    def _quote(self) -> int | float:
+    def _quote(self, ignore: bool = False) -> int | float:
         """Logic corresponding to 'quote' token."""
 
         # Note that this case doesn't call
@@ -194,11 +194,14 @@ class Evaluator:
             else:
                 code_expr.append(t)
 
-        self.heap.append(Internal.code)
-        self.heap.append(Token(Type.INT, str(len(code_expr))))
-        self.heap.extend(code_expr)
+        if ignore:
+            return self.expression()
+        else:
+            self.heap.append(Internal.code)
+            self.heap.append(Token(Type.INT, str(len(code_expr))))
+            self.heap.extend(code_expr)
 
-        return start
+            return start
 
     def expression(self, level: int = Precedence.NONE) -> int | float:
         """Pratt-parse an arithmetic expression, evaluating it."""
@@ -383,8 +386,7 @@ class Evaluator:
                         acc = self._call(type_addr)
 
                     else:
-                        self.stream.prepend(Op.quote)
-                        acc = self.expression()
+                        acc = self._quote(ignore=True)
 
                 case _ as token:
                     raise ValueError(f"Invalid led: {token}")
