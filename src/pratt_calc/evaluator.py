@@ -36,13 +36,12 @@ class Precedence(enum.IntEnum):
     NONE = enum.auto()
     SEMICOLON = enum.auto()
     ASSIGNMENT = enum.auto()
-    CONDITIONAL = enum.auto()
     PLUS_MINUS = enum.auto()
     TIMES_DIVIDE = enum.auto()
     POWER = enum.auto()
     UNARY = enum.auto()
     FACTORIAL = enum.auto()
-    DEREFERENCE = enum.auto()
+    IMMEDIATE = enum.auto()
 
 
 class LedPrecedenceTable(UserDict[Token, Precedence]):
@@ -86,7 +85,7 @@ class Evaluator:
             Op.factorial: Precedence.FACTORIAL,
             Op.semicolon: Precedence.SEMICOLON,
             Op.assign: Precedence.ASSIGNMENT,
-            Op.quote: Precedence.CONDITIONAL,
+            Op.quote: Precedence.IMMEDIATE,
         }
     )
 
