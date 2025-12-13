@@ -147,10 +147,9 @@ class Evaluator:
 
         return len(self.registers) - 1
 
-    def _call(self) -> int | float:
+    def _call(self, type_addr: int) -> int | float:
         """Logic corresponding to 'call' token."""
 
-        type_addr = int(self.expression(Precedence.UNARY))
         type_t = self.heap[type_addr]
 
         if type_t != Internal.code:
@@ -284,7 +283,8 @@ class Evaluator:
                         acc = self._quote()
 
                     case Op.call:
-                        acc = self._call()
+                        type_addr = int(self.expression(Precedence.UNARY))
+                        acc = self._call(type_addr)
 
                     case Op.semicolon:
                         # As a nud, ';' is a no-op. This lets users
