@@ -401,9 +401,6 @@ possible, maybe at another time though.
 As a whole, the algorithm allows for a great deal of artistic
 license.
 
-For example, in some cases it may be desirable to consume `EOF` as a
-`nud` equal, say, to `0`.
-
 Also, the "dispatch functions" may not even be functions; for example,
 in this project, these are represented by Python `match` statements
 that assign to `acc` accordingly.
