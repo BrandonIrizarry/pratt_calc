@@ -1,7 +1,9 @@
 # Table of Contents
 <a id="introduction"></a>
 + [Introduction](#introduction)
++ [Motivation](#motivation)
 + [Requirements](#requirements)
++ [Quick Start](#quick-start)
 + [Installation](#installation)
 + [pip](#pip)
 + [pipx (recommended)](#pipx-(recommended))
@@ -42,13 +44,44 @@ well as a few other sources:
 I also have [some notes](#the-pratt-parsing-algorithm) at the end of this document which go into
 some detail over how the Pratt parsing machinery works.
 
+<a id="motivation"></a>
+# Motivation
+
+When reading through my copy of *An Introduction to Functional
+Programming Through Lambda Calculus* (Dover, 2011), I was inspired by
+how simply and directly lambda calculus can be used as a means to
+implement a higher level language. I initially began writing an
+interpreter for such a language. I then later became frustrated with
+my attempt, and tried a second time, this time with the intention of
+scaling back the scope of the project. In researching parsing methods,
+I came across the Pratt parsing algorithm. I started on a
+proof-of-concept project to nail my understanding of it, and liked the
+result so much that I decided to expand on it, which is what you're
+looking at right now. 😁
+
 <a id="requirements"></a>
 # Requirements
 
 Requires Python 3.13 or greater.
 
+<a id="quick-start"></a>
+# Quick Start
+
+```bash
+# Install globally.
+pipx install pratt-calc
+
+# Launches an interactive REPL.
+pratt-calc
+
+# Painlessly uninstall the application when finished.
+pipx uninstall pratt-calc
+```
+
 <a id="installation"></a>
 # Installation
+
+Here's a more detailed reference on how to install the application.
 
 <a id="pip"></a>
 ## pip
@@ -84,6 +117,7 @@ git clone https://github.com/BrandonIrizarry/pratt-calc
 cd pratt-calc
 uv sync --locked
 ```
+
 <a id="usage"></a>
 # Usage
 
