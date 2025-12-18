@@ -1,3 +1,6 @@
+[![CI](https://github.com/BrandonIrizarry/pratt-calc/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/BrandonIrizarry/pratt-calc/actions/workflows/ci.yml)
+[![Publish](https://github.com/BrandonIrizarry/pratt-calc/actions/workflows/publish.yml/badge.svg?branch=main)](https://github.com/BrandonIrizarry/pratt-calc/actions/workflows/publish.yml)
+
 # Table of Contents
 <a id="introduction"></a>
 + [Introduction](#introduction)
