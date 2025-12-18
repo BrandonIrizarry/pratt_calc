@@ -1,6 +1,6 @@
 [project]
 name = "pratt-calc"
-version = "2.0.3"
+version = "2.0.4"
 description = "Arithmetic calculator which uses a Pratt parser"
 readme = "README.md"
 authors = [
